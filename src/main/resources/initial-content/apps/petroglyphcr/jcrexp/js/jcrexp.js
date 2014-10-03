@@ -11,9 +11,40 @@ $(function () {
 	
     w2ui['main-container'].content('top', '<div style="padding: 12px 20px; font-size: 18px;">JCR Sling Explorer</div>');
 	w2ui['main-container'].content('left', '<div id="jstree_jcr"></div>');
+	w2ui['main-container'].content('main', '<div id="tabs" style="width: 100%;"></div>');
+	
+	$('#tabs').w2tabs({
+        name: 'tabs',
+        active: 'search',
+        tabs: [
+            { id: 'search', caption: 'Search' },
+            { id: 'properties', caption: 'Properties' },
+            { id: 'content', caption: 'Content' }
+        ],
+        onClick: function (event) {
+        	if (event.target == 'search') {
+        		$('#tab-content');
+        	} else if (event.target == 'properties') {
+        		$('#tab-content');
+        	} else if (event.target == 'content') {
+        		$('#tab-content');
+        	}
+    	}
+    });
 	
 	
-	$('#jstree_jcr').jstree({
+	$('#jstree_jcr').on('changed.jstree', function (e, data) {
+	    /*var i, j, r = [];
+	    for(i = 0, j = data.selected.length; i < j; i++) {
+	      r.push(data.instance.get_node(data.selected[i]).text);
+	    }
+	    $('#event_result').html('Selected: ' + r.join(', '));*/
+		//console.log('/tools/petroglyphcr/jcrexp.node.info' + data.selected[0]);
+		
+		$.getJSON('/tools/petroglyphcr/jcrexp.node.info' + data.selected[0], function(data) {
+			console.log(data);
+		});
+	  }).jstree({
 		'core' : {
 			'data' : {
 				'url' : function (node) {
